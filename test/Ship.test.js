@@ -1,6 +1,6 @@
 import Ship from "../src/Ship.js";
 
-describe('floating on create', () => {
+describe('Ship Tests', () => {
     let ship;
 
     beforeAll(() => {
