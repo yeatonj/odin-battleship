@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/yeatonj/odin-battleship#readme",
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "babel-jest": "^30.0.2",
     "css-loader": "^7.1.2",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.3",
