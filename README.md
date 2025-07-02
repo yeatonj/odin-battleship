@@ -1,2 +1,2 @@
-# odin-template
-This is a template for future projects, use as needed.
+# odin-battleship
+Creation of a battleship app for TDD in TOP
