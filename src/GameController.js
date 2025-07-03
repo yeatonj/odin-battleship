@@ -23,6 +23,7 @@ export default class GameController {
     }
 
     selectShip(shipNum) {
+        this.selectedOrientation = 0;
         this.selectedShip = shipNum;
     }
 
@@ -45,7 +46,6 @@ export default class GameController {
             this.placementTracker[this.selectedShip].placed = true;
             // Reset selected ship
             this.selectedShip = -1;
-            this.selectedOrientation = 0;
         } catch {
             // Could log error placing ship here if we want
         }
