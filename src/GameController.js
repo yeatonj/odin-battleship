@@ -6,6 +6,7 @@ export default class GameController {
 
     constructor() {
         this.players = [new Player("human", this.#BOARD_SIZE), new Player("computer", this.#BOARD_SIZE)];
+        this.activePlayer = 0; // always start with the human player
 
         // 0 -> setup, 1 -> playing, 2 -> finished
         this.gamePhase = 0;
@@ -60,5 +61,12 @@ export default class GameController {
 
     #startGame() {
         this.gamePhase = 1;
+    }
+
+    swapActivePlayer() {
+        if (this.gamePhase != 1) {
+            throw new Error('Can only swap phases in phase 1, currently in ' + String(this.gamePhase));
+        }
+        this.activePlayer = (this.activePlayer + 1) % 2;
     }
 }
