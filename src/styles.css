@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 #play-area {
     display: grid;
     grid-template-columns: 800px 600px;
@@ -7,6 +11,8 @@
     height:400px;
     width: 400px;
     background-color: blue;
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
 }
 
 #ship-area {
@@ -18,4 +24,16 @@
 #player-area {
     display: grid;
     grid-template-columns: 500px 200px ;
+}
+
+.miss {
+    background-color: lightblue;
+}
+
+.hit {
+    background-color: red;
+}
+
+.ship {
+    background-color: grey;
 }

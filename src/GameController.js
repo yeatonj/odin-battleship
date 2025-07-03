@@ -1,4 +1,5 @@
 import Player from "./Player";
+import DisplayManager from "./DisplayManager";
 
 export default class GameController {
     #BOARD_SIZE = 10;
@@ -21,6 +22,10 @@ export default class GameController {
             this.players[1].randomlyPlaceShip(size);
             this.placementTracker.push({"length" : size, "placed" : false});
         }
+
+        this.displayManager = new DisplayManager(this.#BOARD_SIZE);
+
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
     }
 
     selectShip(shipNum) {
@@ -33,7 +38,7 @@ export default class GameController {
     }
 
     placeSelectedShip(row, col) {
-        if (this.selectedShip == -1) {
+        if (this.selectedShip === undefined) {
             throw new Error('No ship selected to place.');
         }
         if (this.placementTracker[this.selectedShip].placed) {
@@ -46,7 +51,7 @@ export default class GameController {
             this.players[0].board.placeShip(row, col, length, orientation);
             this.placementTracker[this.selectedShip].placed = true;
             // Reset selected ship
-            this.selectedShip = -1;
+            this.selectedShip = undefined;
         } catch {
             // Could log error placing ship here if we want
         }
@@ -61,6 +66,8 @@ export default class GameController {
 
     #startGame() {
         this.gamePhase = 1;
+        // !! this will likely need to move
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips())
     }
 
     #swapActivePlayer() {
