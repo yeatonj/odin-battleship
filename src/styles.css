@@ -1,0 +1,21 @@
+#play-area {
+    display: grid;
+    grid-template-columns: 800px 600px;
+}
+
+.board {
+    height:400px;
+    width: 400px;
+    background-color: blue;
+}
+
+#ship-area {
+    height: 400px;
+    width: 150px;
+    background-color: red;
+}
+
+#player-area {
+    display: grid;
+    grid-template-columns: 500px 200px ;
+}
