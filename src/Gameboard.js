@@ -87,6 +87,7 @@ export default class Gameboard {
             this.shots.set(coord, 'hit');
             this.ships[shipNum].ship.hit();
         }
+        return true;
     }
 
     allSunk() {
