@@ -64,4 +64,44 @@ export default class DisplayManager {
             }
         }
     }
+
+    drawComputerBoard(shotMap, shipMap, shotCallback) {
+        // shotMap: [[row, col, "hit/miss"].....]
+        // shipMap: [{length, row, col, orientation}]
+        const board = document.querySelector(".cpu-board");
+        const boardState = []
+        // populate initial state
+        for (let r = 0; r < this.boardSize; r++) {
+            boardState.push([])
+            for (let c = 0; c < this.boardSize; c++) {
+                boardState[r].push("empty"); 
+            }
+        }
+        // add ships
+        for (const ship of shipMap) {
+            if (ship.orientation == "right") {
+                for (let c = ship.col; c < ship.col + ship.length; c ++) {
+                    boardState[ship.row][c] = "ship";
+                }
+            } else {
+                for (let r = ship.row; r < ship.row + ship.length; c ++) {
+                    boardState[r][ship.col] = "ship";
+                }
+            }
+        }
+        // Add shots
+        for (const shot of shotMap) {
+            boardState[shot[0]][shot[1]] = shot[2];
+        }
+        // Draw map
+        for (let r = 0; r < this.boardSize; r++) {
+            for (let c = 0; c < this.boardSize; c++) {
+                const boardMarker = document.createElement('button');
+                boardMarker.addEventListener("click", () => {shotCallback(r,c)});
+                boardMarker.classList.add(boardState[r][c]);
+                boardMarker.classList.add("board-space");
+                board.appendChild(boardMarker);
+            }
+        }
+    }
 }

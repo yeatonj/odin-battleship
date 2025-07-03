@@ -2,19 +2,18 @@ import GameController from "../src/GameController";
 
 describe('Game Controller Tests', () => { 
     let controller;
-    beforeEach(() => {
-        controller = new GameController();
-    });
-
     test('player has not placed any ships', () => {
+        controller = new GameController(true);
         expect(controller.gamePhase).toBe(0);
     });
 
     test('player tries to place without ship selected 1', () => {
+        controller = new GameController(true);
         expect(() => controller.placeSelectedShip(0, 0)).toThrow();
     });
 
     test('player has not placed all ships', () => {
+        controller = new GameController(true);
         controller.selectShip(1);
         controller.placeSelectedShip(1, 1);
 
@@ -22,12 +21,14 @@ describe('Game Controller Tests', () => {
     });
 
     test('player tries to place without ship selected 2', () => {
+        controller = new GameController(true);
         controller.selectShip(1);
         controller.placeSelectedShip(1, 1);
         expect(() => controller.placeSelectedShip(0, 0)).toThrow();
     });
 
     test('player has not placed all ships, misplaced one', () => {
+        controller = new GameController(true);
         for (let i = 0; i < 4; i++) {
             controller.selectShip(i);
             controller.placeSelectedShip(i,0);
@@ -39,6 +40,7 @@ describe('Game Controller Tests', () => {
     });
 
     test('player has not placed all ships, failed rotation on one', () => {
+        controller = new GameController(true);
         controller.selectShip(0);
         controller.placeSelectedShip(1,0);
         controller.selectShip(1);
@@ -54,6 +56,7 @@ describe('Game Controller Tests', () => {
     });
 
     test('player tries to place already placed ship', () => {
+        controller = new GameController(true);
         controller.selectShip(1);
         controller.placeSelectedShip(1, 1);
         controller.selectShip(1);
@@ -61,6 +64,7 @@ describe('Game Controller Tests', () => {
     });
 
     test('player places all ships 1', () => {
+        controller = new GameController(true);
         for (let i = 0; i < 5; i++) {
             controller.selectShip(i);
             controller.placeSelectedShip(i,0);
@@ -69,6 +73,7 @@ describe('Game Controller Tests', () => {
     });
 
     test('player places all ships 2', () => {
+        controller = new GameController(true);
         controller.selectShip(0);
         controller.placeSelectedShip(0,0);
 

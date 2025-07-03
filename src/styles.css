@@ -26,6 +26,10 @@
     grid-template-columns: 500px 200px ;
 }
 
+.empty {
+    background-color: blue;
+}
+
 .miss {
     background-color: lightblue;
 }

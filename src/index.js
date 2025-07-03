@@ -14,7 +14,7 @@ console.log("hello world");
 
 import GameController from "./GameController";
 
-const controller = new GameController();
+const controller = new GameController(true);
 controller.selectShip(0);
 controller.placeSelectedShip(0,0);
 controller.selectShip(1);

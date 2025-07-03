@@ -1,11 +1,11 @@
 import Player from "./Player";
-import DisplayManager from "./DisplayManager";
+// import DisplayManager from "./DisplayManager";
 
 export default class GameController {
     #BOARD_SIZE = 10;
     #SHIP_SIZES = [5, 4, 3, 3, 2];
 
-    constructor() {
+    constructor(randomPlacement) {
         this.players = [new Player("human", this.#BOARD_SIZE), new Player("computer", this.#BOARD_SIZE)];
         this.activePlayer = 0; // always start with the human player
 
@@ -17,15 +17,25 @@ export default class GameController {
         this.selectedOrientation = 0;
 
         this.placementTracker = []
-        // Place cpu ships randomly and populate placement tracker
-        for (const size of this.#SHIP_SIZES) {
-            this.players[1].randomlyPlaceShip(size);
-            this.placementTracker.push({"length" : size, "placed" : false});
+        if (randomPlacement) {
+            // Place cpu ships randomly and populate placement tracker
+            for (const size of this.#SHIP_SIZES) {
+                this.players[1].randomlyPlaceShip(size);
+                this.placementTracker.push({"length" : size, "placed" : false});
+            }
+        } else {
+            // place all ships deterministically
+            for (let i = 0; i < this.#SHIP_SIZES.length; i++) {
+                this.players[0].placeShip(i, i, this.#SHIP_SIZES.length, "right");
+                this.placementTracker.push({"length" : this.#SHIP_SIZES.length, "placed" : true});
+
+            }
         }
+        
 
-        this.displayManager = new DisplayManager(this.#BOARD_SIZE);
+        // this.displayManager = new DisplayManager(this.#BOARD_SIZE);
 
-        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
+        // this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
     }
 
     selectShip(shipNum) {
@@ -67,7 +77,8 @@ export default class GameController {
     #startGame() {
         this.gamePhase = 1;
         // !! this will likely need to move
-        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips())
+        // this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+        // this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
     }
 
     #swapActivePlayer() {
@@ -82,8 +93,9 @@ export default class GameController {
 
     processPlayerShot(row, col) {
         try {
-            const wasHit = this.players[1].board.recieveAttack(attack[0], attack[1]);
+            const wasHit = this.players[1].board.recieveAttack(row, col);
             // !! NEED TO DRAW BOARD HERE, INCLUDING ANY SUNK SHIPS
+            // this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
             if (wasHit && this.#checkLoss(1)) {
                 this.#endGame(0);
                 return;
@@ -107,6 +119,7 @@ export default class GameController {
             try {
                 keepShooting = this.players[0].board.recieveAttack(attack[0], attack[1]);
                 // !! NEED TO DRAW BOARD HERE
+                // this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
                 if (wasHit && this.#checkLoss(0)) {
                     this.#endGame(1);
                     return;
