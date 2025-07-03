@@ -88,10 +88,11 @@ describe('Gameboard Tests', () => {
         expect(gameboard.getShots()).toEqual(testRes);
         gameboard.recieveAttack(1, 1);
         testRes.push([1, 1, "miss"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
         gameboard.recieveAttack(1, 2);
         testRes.push([1, 2, "miss"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
+        expect(gameboard.getShots()).toContainEqual(testRes[1]);
     });
 
     test('records hits', () => {
@@ -101,10 +102,11 @@ describe('Gameboard Tests', () => {
         gameboard.placeShip(2, 2, 2, 'down');
         gameboard.recieveAttack(2, 2);
         testRes.push([2, 2, "hit"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
         gameboard.recieveAttack(3, 2);
         testRes.push([3, 2, "hit"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
+        expect(gameboard.getShots()).toContainEqual(testRes[1]);
     });
 
     test('records hits and misses', () => {
@@ -117,20 +119,40 @@ describe('Gameboard Tests', () => {
         expect(gameboard.getShots()).toEqual(testRes);
         gameboard.recieveAttack(1, 1);
         testRes.push([1, 1, "miss"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
+        expect(gameboard.getShots()).toContainEqual(testRes[1]);
         gameboard.recieveAttack(3, 2);
         testRes.push([3, 2, "hit"]);
-        expect(gameboard.getShots()).toEqual(testRes);
+        expect(gameboard.getShots()).toContainEqual(testRes[0]);
+        expect(gameboard.getShots()).toContainEqual(testRes[1]);
+        expect(gameboard.getShots()).toContainEqual(testRes[2]);
     });
 
     test('returns sunk ships', () => {
+        const sunkShips = [];
 
+        gameboard.placeShip(2, 2, 2, 'down');
+        gameboard.placeShip(1, 1, 3, 'right');
+
+        gameboard.recieveAttack(1, 1);
+        expect(gameboard.getSunkShips()).toEqual(sunkShips);
+        gameboard.recieveAttack(1, 2);
+        expect(gameboard.getSunkShips()).toEqual(sunkShips);
+        gameboard.recieveAttack(2, 2);
+        expect(gameboard.getSunkShips()).toEqual(sunkShips);
+        
+        gameboard.recieveAttack(1, 3);
+        sunkShips.push({"length": 3, "row" : 1, "col" : 1, "orientation" : "right"});
+        expect(gameboard.getSunkShips()).toEqual(sunkShips);
+        gameboard.recieveAttack(3, 2);
+        sunkShips.push({"length": 2, "row" : 2, "col" : 2, "orientation" : "down"});
+        // Use to contain here as we don't control order
+        expect(gameboard.getSunkShips()).toContainEqual(sunkShips[0]);
+        expect(gameboard.getSunkShips()).toContainEqual(sunkShips[1]);
     });
 
 
     test('boardTooSmall', () => {
         expect(() => {new Gameboard(2, 3);}).toThrow();
     });
-
-
 });

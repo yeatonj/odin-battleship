@@ -100,7 +100,17 @@ export default class Gameboard {
     }
 
     getSunkShips() {
-        // !!
+        const sunkShips = [];
+        for (const shipStruct of this.ships) {
+            if (shipStruct.ship.isSunk()) {
+                sunkShips.push({
+                    "length": shipStruct.ship.length, 
+                    "row" : shipStruct.row, 
+                    "col" : shipStruct.col, 
+                    "orientation" : shipStruct.orientation});
+            }
+        }
+        return sunkShips;
     }
 
     getShots() {
