@@ -160,6 +160,21 @@ describe('Gameboard Tests', () => {
         expect(gameboard.getSunkShips()).toContainEqual(sunkShips[1]);
     });
 
+    test('returns all ships', () => {
+        const ships = [];
+
+        gameboard.placeShip(2, 2, 2, 'down');
+        ships.push({"length": 2, "row" : 2, "col" : 2, "orientation" : "down"});
+        expect(gameboard.getPlacedShips()).toEqual(ships);
+
+        gameboard.placeShip(1, 1, 3, 'right');
+        ships.push({"length": 3, "row" : 1, "col" : 1, "orientation" : "right"});
+        
+        // Use to contain here as we don't control order
+        expect(gameboard.getPlacedShips()).toContainEqual(ships[0]);
+        expect(gameboard.getPlacedShips()).toContainEqual(ships[1]);
+    });
+
 
     test('boardTooSmall', () => {
         expect(() => {new Gameboard(2, 3);}).toThrow();

@@ -117,6 +117,19 @@ export default class Gameboard {
         return sunkShips;
     }
 
+    getPlacedShips() {
+        const placedShips = [];
+        for (const shipStruct of this.ships) {
+            placedShips.push({
+                "length": shipStruct.ship.length, 
+                "row" : shipStruct.row, 
+                "col" : shipStruct.col, 
+                "orientation" : shipStruct.orientation}
+                );
+            }
+        return placedShips;
+    }
+
     getShots() {
         const shotArr = [];
         for (const [loc, hitOrMiss] of this.shots.entries()) {
