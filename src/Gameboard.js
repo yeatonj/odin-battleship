@@ -66,6 +66,7 @@ export default class Gameboard {
         return true;
     }
 
+    // Returns true on hit, false on miss
     recieveAttack(row, col) {
         if (row < 0 || 
             row >= this.rows ||
@@ -83,9 +84,11 @@ export default class Gameboard {
         const shipNum = this.shipLocs[coord];
         if (shipNum === undefined) {
             this.shots.set(coord, 'miss');
+            return false;
         } else {
             this.shots.set(coord, 'hit');
             this.ships[shipNum].ship.hit();
+            return true;
         }
         return true;
     }

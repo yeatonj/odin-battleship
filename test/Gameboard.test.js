@@ -50,6 +50,15 @@ describe('Gameboard Tests', () => {
         expect(() => {gameboard.recieveAttack(1, 5)}).toThrow();
     });
 
+    test('miss', () => {
+        expect(gameboard.recieveAttack(1,1)).toBe(false);
+    });
+
+    test('hit', () => {
+        gameboard.placeShip(1, 1, 3, 'right');
+        expect(gameboard.recieveAttack(1,1)).toBe(true);
+    });
+
     test('repeat attack', () => {
         gameboard.recieveAttack(1, 1);
         expect(() => {gameboard.recieveAttack(1, 1)}).toThrow();
