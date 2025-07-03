@@ -1,5 +1,5 @@
 import Player from "./Player";
-// import DisplayManager from "./DisplayManager";
+import DisplayManager from "./DisplayManager";
 
 export default class GameController {
     #BOARD_SIZE = 10;
@@ -34,9 +34,9 @@ export default class GameController {
         }
         
 
-        // this.displayManager = new DisplayManager(this.#BOARD_SIZE);
+        this.displayManager = new DisplayManager(this.#BOARD_SIZE);
 
-        // this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
     }
 
     selectShip(shipNum) {
@@ -78,8 +78,8 @@ export default class GameController {
     #startGame() {
         this.gamePhase = 1;
         // !! this will likely need to move
-        // this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
-        // this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+        this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
     }
 
     #swapActivePlayer() {
@@ -96,7 +96,7 @@ export default class GameController {
         try {
             const wasHit = this.players[1].board.recieveAttack(row, col);
             // !! NEED TO DRAW BOARD HERE, INCLUDING ANY SUNK SHIPS
-            // this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
+            this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
             if (wasHit && this.#checkLoss(1)) {
                 this.#endGame(0);
                 return;
@@ -120,7 +120,7 @@ export default class GameController {
             try {
                 keepShooting = this.players[0].board.recieveAttack(attack[0], attack[1]);
                 // !! NEED TO DRAW BOARD HERE
-                // this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+                this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
                 if (keepShooting && this.#checkLoss(0)) {
                     this.#endGame(1);
                     return;

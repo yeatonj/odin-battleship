@@ -30,6 +30,10 @@ export default class DisplayManager {
         // shotMap: [[row, col, "hit/miss"].....]
         // shipMap: [{length, row, col, orientation}]
         const board = document.querySelector(".player-board");
+        while(board.firstChild) {
+            board.removeChild(board.lastChild);
+        }
+
         const boardState = []
         // populate initial state
         for (let r = 0; r < this.boardSize; r++) {
@@ -69,6 +73,9 @@ export default class DisplayManager {
         // shotMap: [[row, col, "hit/miss"].....]
         // shipMap: [{length, row, col, orientation}]
         const board = document.querySelector(".cpu-board");
+        while(board.firstChild) {
+            board.removeChild(board.lastChild);
+        }
         const boardState = []
         // populate initial state
         for (let r = 0; r < this.boardSize; r++) {
