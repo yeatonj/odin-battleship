@@ -63,7 +63,7 @@ export default class GameController {
         this.gamePhase = 1;
     }
 
-    swapActivePlayer() {
+    #swapActivePlayer() {
         if (this.gamePhase != 1) {
             throw new Error('Can only swap phases in phase 1, currently in ' + String(this.gamePhase));
         }
