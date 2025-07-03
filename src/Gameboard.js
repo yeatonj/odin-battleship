@@ -90,7 +90,6 @@ export default class Gameboard {
             this.ships[shipNum].ship.hit();
             return true;
         }
-        return true;
     }
 
     allSunk() {

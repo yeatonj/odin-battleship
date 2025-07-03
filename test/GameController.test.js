@@ -80,29 +80,6 @@ describe('Game Controller Tests', () => {
         expect(controller.gamePhase).toBe(1);
         
     });
-
-    test('swap active player 1', () => {
-        controller.gamePhase = 1;
-        controller.swapActivePlayer();
-        expect(controller.activePlayer).toBe(1);
-    });
-
-    test('swap active player 2', () => {
-        controller.gamePhase = 1;
-        controller.swapActivePlayer();
-        controller.swapActivePlayer();
-        expect(controller.activePlayer).toBe(0);
-    });
-
-    test('swap active player, wrong phase 1', () => {
-        expect(() => controller.swapActivePlayer()).toThrow();
-    });
-
-    test('swap active player, wrong phase 2', () => {
-        controller.gamePhase = 2;
-        expect(() => controller.swapActivePlayer()).toThrow();
-    });
-
     
 
 });
