@@ -83,6 +83,50 @@ describe('Gameboard Tests', () => {
         expect(gameboard.allSunk()).toBe(true);
     });
 
+    test('records misses', () => {
+        const testRes = [];
+        expect(gameboard.getShots()).toEqual(testRes);
+        gameboard.recieveAttack(1, 1);
+        testRes.push([1, 1, "miss"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+        gameboard.recieveAttack(1, 2);
+        testRes.push([1, 2, "miss"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+    });
+
+    test('records hits', () => {
+        const testRes = [];
+        expect(gameboard.getShots()).toEqual(testRes);
+        
+        gameboard.placeShip(2, 2, 2, 'down');
+        gameboard.recieveAttack(2, 2);
+        testRes.push([2, 2, "hit"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+        gameboard.recieveAttack(3, 2);
+        testRes.push([3, 2, "hit"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+    });
+
+    test('records hits and misses', () => {
+        const testRes = [];
+        expect(gameboard.getShots()).toEqual(testRes);
+        
+        gameboard.placeShip(2, 2, 2, 'down');
+        gameboard.recieveAttack(2, 2);
+        testRes.push([2, 2, "hit"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+        gameboard.recieveAttack(1, 1);
+        testRes.push([1, 1, "miss"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+        gameboard.recieveAttack(3, 2);
+        testRes.push([3, 2, "hit"]);
+        expect(gameboard.getShots()).toEqual(testRes);
+    });
+
+    test('returns sunk ships', () => {
+
+    });
+
 
     test('boardTooSmall', () => {
         expect(() => {new Gameboard(2, 3);}).toThrow();

@@ -76,15 +76,15 @@ export default class Gameboard {
         }
         // check if already shot here
         const coord = this.#keyfromCoord(row, col);
-        if (this.shots[coord] != undefined) {
+        if (this.shots.get(coord) != undefined) {
             throw new Error('Already shot here.');
         }
         // Otherwise, check if a ship is here
         const shipNum = this.shipLocs[coord];
         if (shipNum === undefined) {
-            this.shots[coord] = 'miss';
+            this.shots.set(coord, 'miss');
         } else {
-            this.shots[coord] = 'hit';
+            this.shots.set(coord, 'hit');
             this.ships[shipNum].ship.hit();
         }
     }
@@ -104,10 +104,24 @@ export default class Gameboard {
     }
 
     getShots() {
-        // !!
+        const shotArr = [];
+        for (const [loc, hitOrMiss] of this.shots.entries()) {
+            const tempRes = this.#coordFromKey(loc);
+            tempRes.push(hitOrMiss);
+            shotArr.push(tempRes);
+        }
+        return shotArr;
     }
 
     #keyfromCoord(row, col) {
         return String(row) + "," + String(col);
+    }
+    
+    #coordFromKey(key) {
+        const resArr = [0, 0];
+        const splitCoords = key.split(",");
+        resArr[0] = Number(splitCoords[0]);
+        resArr[1] = Number(splitCoords[1]);
+        return resArr;
     }
 }
