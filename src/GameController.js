@@ -26,9 +26,10 @@ export default class GameController {
         } else {
             // place all ships deterministically
             for (let i = 0; i < this.#SHIP_SIZES.length; i++) {
-                this.players[0].placeShip(i, i, this.#SHIP_SIZES.length, "right");
+                this.players[0].board.placeShip(i, i, this.#SHIP_SIZES.length, "right");
+                this.players[1].board.placeShip(i, i, this.#SHIP_SIZES.length, "right");
                 this.placementTracker.push({"length" : this.#SHIP_SIZES.length, "placed" : true});
-
+                this.#startGame();
             }
         }
         
@@ -120,7 +121,7 @@ export default class GameController {
                 keepShooting = this.players[0].board.recieveAttack(attack[0], attack[1]);
                 // !! NEED TO DRAW BOARD HERE
                 // this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
-                if (wasHit && this.#checkLoss(0)) {
+                if (keepShooting && this.#checkLoss(0)) {
                     this.#endGame(1);
                     return;
                 }

@@ -86,5 +86,22 @@ describe('Game Controller Tests', () => {
         
     });
     
+    test('player can hit', () => {
+        controller = new GameController(false);
+        expect(controller.activePlayer).toBe(0);
+        controller.processPlayerShot(0,0);
+        expect(controller.activePlayer).toBe(0);
+        expect(controller.players[1].board.getShots().length).toBe(1);
+    });
+
+    test('player can miss', () => {
+        controller = new GameController(false);
+        expect(controller.activePlayer).toBe(0);
+        controller.processPlayerShot(9,9);
+        expect(controller.players[1].board.getShots().length).toBe(1);
+        expect(controller.players[0].board.getShots().length).toBeGreaterThan(0);
+        
+        expect(controller.activePlayer).toBe(0);
+    });
 
 });
