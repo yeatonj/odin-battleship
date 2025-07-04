@@ -6,6 +6,12 @@ export default class GameController {
     #SHIP_SIZES = [5, 4, 3, 3, 2];
 
     constructor(randomPlacement) {
+        this.randomPlacement = randomPlacement;
+        this.displayManager = new DisplayManager(this.#BOARD_SIZE);
+        this.#setupGame();
+    }
+
+    #setupGame() {
         this.players = [new Player("human", this.#BOARD_SIZE), new Player("computer", this.#BOARD_SIZE)];
         this.activePlayer = 0; // always start with the human player
 
@@ -17,7 +23,7 @@ export default class GameController {
         this.selectedOrientation = 0;
 
         this.placementTracker = []
-        if (randomPlacement) {
+        if (this.randomPlacement) {
             // Place cpu ships randomly and populate placement tracker
             for (const size of this.#SHIP_SIZES) {
                 this.players[1].randomlyPlaceShip(size);
@@ -26,16 +32,12 @@ export default class GameController {
         } else {
             // place all ships deterministically
             for (let i = 0; i < this.#SHIP_SIZES.length; i++) {
-                this.players[0].board.placeShip(i, i, this.#SHIP_SIZES.length, "right");
-                this.players[1].board.placeShip(i, i, this.#SHIP_SIZES.length, "right");
-                this.placementTracker.push({"length" : this.#SHIP_SIZES.length, "placed" : true});
+                this.players[0].board.placeShip(i, i, this.#SHIP_SIZES[i], "right");
+                this.players[1].board.placeShip(i, i, this.#SHIP_SIZES[i], "right");
+                this.placementTracker.push({"length" : this.#SHIP_SIZES[i], "placed" : true});
                 this.#startGame();
             }
         }
-        
-
-        this.displayManager = new DisplayManager(this.#BOARD_SIZE);
-
         this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
     }
 
@@ -93,6 +95,10 @@ export default class GameController {
     }
 
     processPlayerShot(row, col) {
+        if (this.gamePhase != 1) {
+            console.log("Cannot shoot when game is inactive.");
+            return;
+        }
         try {
             const wasHit = this.players[1].board.recieveAttack(row, col);
             // !! NEED TO DRAW BOARD HERE, INCLUDING ANY SUNK SHIPS
@@ -142,6 +148,10 @@ export default class GameController {
 
     #endGame(winnerPlayerNum) {
         this.gamePhase = 2;
-        // !! NEED TO CALL SOMETHING IN THE DISPLAY TO DISPLAY WIN
+        this.displayManager.drawEndGame(winnerPlayerNum === 0 ? "human" : "computer", this.resetGame.bind(this));
+    }
+
+    resetGame() {
+        this.#setupGame();
     }
 }
