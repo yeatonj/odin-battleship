@@ -6,7 +6,7 @@ export default class DisplayManager {
 
     #setupStatus() {
         const statusArea = document.getElementById("status-msg");
-        statusArea.innerHTML = "Welcome to Battleship. Please place your ships. Use 'R' to rotate your selected ship before placing, if desired."
+        statusArea.innerHTML = "Welcome to Battleship. Please place your ships. Use 'R' to rotate your selected ship before placing, if desired.";
 
     }
 
@@ -140,6 +140,15 @@ export default class DisplayManager {
             resetCallback();
         });
         resetArea.appendChild(newGameButton);
-        
+    }
+
+    playerTurnStatus() {
+        const statusArea = document.getElementById("status-msg");
+        statusArea.innerHTML = "Your turn, please select a space to fire a shot!";
+    }
+
+    cpuTurnStatus() {
+        const statusArea = document.getElementById("status-msg");
+        statusArea.innerHTML = "CPU turn, please wait while it selects its shot.";
     }
 }

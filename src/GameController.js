@@ -4,6 +4,7 @@ import DisplayManager from "./DisplayManager";
 export default class GameController {
     #BOARD_SIZE = 10;
     #SHIP_SIZES = [5, 4, 3, 3, 2];
+    #CPU_TURN_DELAY = 500;
 
     constructor(randomPlacement) {
         this.randomPlacement = randomPlacement;
@@ -79,6 +80,7 @@ export default class GameController {
 
     #startGame() {
         this.gamePhase = 1;
+        this.displayManager.playerTurnStatus();
         // !! this will likely need to move
         this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
         this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
@@ -120,25 +122,43 @@ export default class GameController {
     }
 
     #takeCPUTurn() {
+        this.displayManager.cpuTurnStatus();
+        setTimeout(this.#cpuFireShot.bind(this), this.#CPU_TURN_DELAY);
+    }
+
+    #cpuFireShot() {
+        console.log(this.players);
+        let shotStatus = false;
         let keepShooting = true;
+
         while (keepShooting) {
             const attack = this.players[1].generateAttack();
             try {
-                keepShooting = this.players[0].board.recieveAttack(attack[0], attack[1]);
-                // !! NEED TO DRAW BOARD HERE
-                this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
-                if (keepShooting && this.#checkLoss(0)) {
-                    this.#endGame(1);
-                    return;
-                }
+                shotStatus = this.players[0].board.recieveAttack(attack[0], attack[1]);
+                keepShooting = false;
             } catch {
                 // Need to pick a different place to shoot
                 keepShooting = true;
             }
-            
-            // We get another turn if we keep hitting
         }
+        console.log(shotStatus);
+        // shot status true is a hit, false is a miss
+        
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+        if (shotStatus && this.#checkLoss(0)) {
+            this.#endGame(1);
+            return;
+        } else if (shotStatus) {
+            setTimeout(this.#cpuFireShot.bind(this), this.#CPU_TURN_DELAY);
+            // new turn
+        } else {
+            this.#finishCPUTurn();
+        }
+    }
+
+    #finishCPUTurn() {
         // Swap to player turn
+        this.displayManager.playerTurnStatus();
         this.#swapActivePlayer();
     }
 
