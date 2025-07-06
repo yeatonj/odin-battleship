@@ -187,6 +187,7 @@ export default class DisplayManager {
         const resetArea = document.getElementById("reset-area");
         const newGameButton = document.createElement("button");
         newGameButton.textContent = "Start New Game";
+        newGameButton.classList.add('new-game');
         newGameButton.addEventListener("click", () => {
             const resetArea = document.getElementById("reset-area");
             while (resetArea.firstChild) {
@@ -200,7 +201,7 @@ export default class DisplayManager {
 
     playerTurnStatus() {
         const statusArea = document.getElementById("status-msg");
-        statusArea.innerHTML = "Your turn, please select a space to fire a shot!";
+        statusArea.innerHTML = "Your turn, please select a space on the enemy board to the right to fire a shot!";
     }
 
     cpuTurnStatus() {

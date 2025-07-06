@@ -3,9 +3,13 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
+body {
+    background-color:lightgray;
+}
+
 #play-area {
     display: grid;
-    grid-template-columns: 800px 600px;
+    grid-template-columns: 700px 600px;
 }
 
 .board {
@@ -18,13 +22,19 @@
 
 #ship-area {
     height: 400px;
-    width: 150px;
-    background-color: red;
+    width: 200px;
+    text-align: center;
+}
+
+#ship-area div {
+    display: grid;
+    justify-content: center;
 }
 
 #player-area {
     display: grid;
-    grid-template-columns: 500px 200px ;
+    grid-template-columns: 415px 200px ;
+    justify-content: center;
 }
 
 .empty {
@@ -53,4 +63,26 @@
     justify-content: center;
     align-items: center;
     font-size: 30px;
+}
+
+#ship-area button {
+    height: 25px;
+}
+
+#ship-area p {
+    margin-bottom: 3px;
+    margin-top: 10px;
+}
+
+h3 {
+    margin-bottom: 5px;
+}
+
+h1, #status {
+    margin-left: 30px;
+}
+
+.new-game {
+    margin-top: 20px;
+    margin-left: 20px;
 }
