@@ -10,7 +10,7 @@ export default class DisplayManager {
 
     }
 
-    drawShipArea(shipPlacements, selected, selectionCallback) {
+    drawShipArea(shipPlacements, selected, selectionCallback, rotateCallback, isHorizontal) {
         const shipNames = ["Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"];
 
         const shipArea = document.getElementById("ship-area");
@@ -19,8 +19,22 @@ export default class DisplayManager {
         }
 
         const header = document.createElement('h3');
-        header.textContent = "Ships Available:"
+        header.textContent = "Placement Menu:"
         shipArea.appendChild(header);
+
+        const orientationLabel = document.createElement('p');
+        orientationLabel.textContent = "Toggle Orientation:";
+        shipArea.appendChild(orientationLabel);
+        const orientationToggle = document.createElement("button");
+        if (isHorizontal) {
+            orientationToggle.textContent = "Placing Horizontally";
+        } else {
+            orientationToggle.textContent = "Placing Vertically";
+        }
+        orientationToggle.addEventListener("click", () => {
+            rotateCallback();
+        });
+        shipArea.appendChild(orientationToggle);
 
         for (let i = 0; i < shipNames.length; i++) {
             const shipContainer = document.createElement('div');
@@ -54,7 +68,7 @@ export default class DisplayManager {
         }
     }
 
-    drawPlayerBoard(shotMap, shipMap) {
+    drawPlayerBoard(shotMap, shipMap, isCallback, placementCallback, rotateCallback) {
         // shotMap: [[row, col, "hit/miss"].....]
         // shipMap: [{length, row, col, orientation}]
         const board = document.querySelector(".player-board");
@@ -77,7 +91,7 @@ export default class DisplayManager {
                     boardState[ship.row][c] = "ship";
                 }
             } else {
-                for (let r = ship.row; r < ship.row + ship.length; c ++) {
+                for (let r = ship.row; r < ship.row + ship.length; r ++) {
                     boardState[r][ship.col] = "ship";
                 }
             }
@@ -89,10 +103,27 @@ export default class DisplayManager {
         // Draw map
         for (let r = 0; r < this.boardSize; r++) {
             for (let c = 0; c < this.boardSize; c++) {
-                const boardMarker = document.createElement('div');
-                boardMarker.classList.add(boardState[r][c]);
-                boardMarker.classList.add("board-space");
-                board.appendChild(boardMarker);
+                if (!isCallback) {
+                    const boardMarker = document.createElement('div');
+                    boardMarker.classList.add(boardState[r][c]);
+                    boardMarker.classList.add("board-space");
+                    board.appendChild(boardMarker);
+                } else {
+                    const boardMarker = document.createElement('button');
+                    boardMarker.addEventListener("click", () => {
+                        try {
+                            const row = r;
+                            const col = c;
+                            placementCallback(row,col);
+                        } catch (error) {
+                            console.log(error.message);
+                        }
+                    });
+                    boardMarker.classList.add(boardState[r][c]);
+                    boardMarker.classList.add("board-space");
+                    board.appendChild(boardMarker);
+                }
+                
             }
         }
     }

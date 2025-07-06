@@ -39,17 +39,19 @@ export default class GameController {
                 this.#startGame();
             }
         }
-        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this), this.rotateSelectedShip.bind(this), this.selectedOrientation === 0);
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips(), true, this.placeSelectedShip.bind(this));
     }
 
     selectShip(shipNum) {
         this.selectedOrientation = 0;
         this.selectedShip = shipNum;
-        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this), this.rotateSelectedShip.bind(this), this.selectedOrientation === 0);
     }
 
     rotateSelectedShip() {
         this.selectedOrientation = (this.selectedOrientation + 1) % 2;
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this), this.rotateSelectedShip.bind(this), this.selectedOrientation === 0);
     }
 
     placeSelectedShip(row, col) {
@@ -67,8 +69,8 @@ export default class GameController {
             this.placementTracker[this.selectedShip].placed = true;
             // Reset selected ship
             this.selectedShip = undefined;
-            this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
-            this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+            this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this), this.rotateSelectedShip.bind(this), this.selectedOrientation === 0);
+            this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips(), true, this.placeSelectedShip.bind(this));
         } catch {
             // Could log error placing ship here if we want
         }
@@ -85,7 +87,7 @@ export default class GameController {
         this.gamePhase = 1;
         this.displayManager.playerTurnStatus();
         // !! this will likely need to move
-        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips(), false, () => {});
         this.displayManager.drawComputerBoard(this.players[1].board.getShots(), this.players[0].board.getSunkShips(), this.processPlayerShot.bind(this));
     }
 
@@ -147,7 +149,7 @@ export default class GameController {
         console.log(shotStatus);
         // shot status true is a hit, false is a miss
         
-        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
+        this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips(), false, () => {});
         if (shotStatus && this.#checkLoss(0)) {
             this.#endGame(1);
             return;
