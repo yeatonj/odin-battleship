@@ -41,3 +41,7 @@
 .ship {
     background-color: grey;
 }
+
+.selected {
+    background-color: green;
+}

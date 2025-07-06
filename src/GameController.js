@@ -45,6 +45,7 @@ export default class GameController {
     selectShip(shipNum) {
         this.selectedOrientation = 0;
         this.selectedShip = shipNum;
+        this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
     }
 
     rotateSelectedShip() {
@@ -66,6 +67,8 @@ export default class GameController {
             this.placementTracker[this.selectedShip].placed = true;
             // Reset selected ship
             this.selectedShip = undefined;
+            this.displayManager.drawShipArea(this.placementTracker, this.selectedShip, this.selectShip.bind(this));
+            this.displayManager.drawPlayerBoard(this.players[0].board.getShots(), this.players[0].board.getPlacedShips());
         } catch {
             // Could log error placing ship here if we want
         }

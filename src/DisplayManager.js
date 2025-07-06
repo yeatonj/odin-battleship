@@ -27,11 +27,29 @@ export default class DisplayManager {
             const name = document.createElement('p');
             name.textContent = shipNames[i];
             shipContainer.appendChild(name);
-            const shipButton = document.createElement('Button');
-            shipButton.textContent = shipNames[i];
-            shipButton.addEventListener("click", () => selectionCallback(i));
-            shipContainer.appendChild(shipButton);
-
+            if (shipPlacements[i].placed) {
+                const alreadyPlaced = document.createElement('p');
+                alreadyPlaced.textContent = "Ship already placed.";
+                shipContainer.appendChild(alreadyPlaced);
+                
+            } else if (selected === i) {
+                // Placement in process
+                const shipButton = document.createElement('Button');
+                shipButton.classList.add('selected');
+                shipButton.textContent = "Unselect Ship";
+                shipButton.addEventListener("click", () => {
+                    selectionCallback(undefined);
+                });
+                shipContainer.appendChild(shipButton);
+            } else {
+                // Still need to place
+                const shipButton = document.createElement('Button');
+                shipButton.textContent = "Select " + shipNames[i];
+                shipButton.addEventListener("click", () => {
+                    selectionCallback(i);
+                });
+                shipContainer.appendChild(shipButton);
+            }
             shipArea.appendChild(shipContainer);
         }
     }
