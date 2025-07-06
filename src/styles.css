@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 #play-area {
@@ -10,9 +11,9 @@
 .board {
     height:400px;
     width: 400px;
-    background-color: blue;
     display: grid;
     grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
 }
 
 #ship-area {
@@ -44,4 +45,12 @@
 
 .selected {
     background-color: green;
+}
+
+.board-space {
+    border: solid black 1px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
 }

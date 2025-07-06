@@ -6,12 +6,13 @@ export default class DisplayManager {
 
     #setupStatus() {
         const statusArea = document.getElementById("status-msg");
-        statusArea.innerHTML = "Welcome to Battleship. Please place your ships. Use 'R' to rotate your selected ship before placing, if desired.";
+        statusArea.innerHTML = "Welcome to Battleship. Please place your ships. Use the toggle button to rotate your ship; the leftmost (horizontal) or topmost (vertical) part of the ship will be placed where you click.";
 
     }
 
     drawShipArea(shipPlacements, selected, selectionCallback, rotateCallback, isHorizontal) {
         const shipNames = ["Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"];
+        const shipLengths = ["5", "4", "3", "3", "2"];
 
         const shipArea = document.getElementById("ship-area");
         while (shipArea.firstChild) {
@@ -39,7 +40,7 @@ export default class DisplayManager {
         for (let i = 0; i < shipNames.length; i++) {
             const shipContainer = document.createElement('div');
             const name = document.createElement('p');
-            name.textContent = shipNames[i];
+            name.textContent = shipNames[i] + ": " + shipLengths[i] + " tiles";
             shipContainer.appendChild(name);
             if (shipPlacements[i].placed) {
                 const alreadyPlaced = document.createElement('p');
@@ -106,6 +107,9 @@ export default class DisplayManager {
                 if (!isCallback) {
                     const boardMarker = document.createElement('div');
                     boardMarker.classList.add(boardState[r][c]);
+                    if (boardState[r][c] === "hit" || boardState[r][c] === "miss") {
+                        boardMarker.textContent = '\u2715';
+                    }
                     boardMarker.classList.add("board-space");
                     board.appendChild(boardMarker);
                 } else {
@@ -166,6 +170,9 @@ export default class DisplayManager {
                 boardMarker.addEventListener("click", () => {shotCallback(r,c)});
                 boardMarker.classList.add(boardState[r][c]);
                 boardMarker.classList.add("board-space");
+                if (boardState[r][c] === "hit" || boardState[r][c] === "miss") {
+                    boardMarker.textContent = '\u2715';
+                }
                 board.appendChild(boardMarker);
             }
         }
